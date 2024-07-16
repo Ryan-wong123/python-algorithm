@@ -1,7 +1,8 @@
 def binary_search(list, target):
     '''
     binary search requires the list to be sorted first in order to be searched
-    binary search breaks list into half to search  O(log n)
+    binary search breaks list into half to search  O(log n) for time complexity 
+    and O(1) for space complexity
     '''
     first = 0
     last = len(list) - 1

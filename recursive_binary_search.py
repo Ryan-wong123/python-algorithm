@@ -1,4 +1,9 @@
 def recursive_binary_search(list, target):
+    '''
+    binary search requires the list to be sorted first in order to be searched
+    binary search breaks list into half to search  O(log n) for time complexity 
+    and O(log n) for space complexity
+    '''
     if len(list) == 0:
         return False
     else:

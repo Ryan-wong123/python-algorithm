@@ -2,7 +2,7 @@ import random
 class Stack:
 
     def __init__(self):
-         self.container = []  
+        self.container = []  
 
     def isEmpty(self):
         return self.size() == 0   

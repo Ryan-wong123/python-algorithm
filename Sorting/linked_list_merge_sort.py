@@ -1,4 +1,4 @@
-from Single_Linked_List import LinkedList
+from Sorting.Single_Linked_List import LinkedList
 
 #sort linked list in ascending order
 def MergeSort(linkedlist):

@@ -99,13 +99,13 @@ for i in range(0,finalQ.size()):
 
     #check if each participant score is more than 40, and if its more than 40, print the participant name, score and bronze medal
     elif(score2 >= 40):
-       print("Participant #"+str(i+1)+":"+finalQ.peek()+ " - " + str(score2) + " -" + " Bronze")
+        print("Participant #"+str(i+1)+":"+finalQ.peek()+ " - " + str(score2) + " -" + " Bronze")
 
-       #add up total number of medals obtained
-       totalNumOfMedal += 1 
+        #add up total number of medals obtained
+        totalNumOfMedal += 1 
 
-       #store participants to new queue
-       lastRound.enqueue(finalQ.dequeue()) 
+        #store participants to new queue
+        lastRound.enqueue(finalQ.dequeue()) 
 
     #if participants score is less than 40, print only the participants name and score only without medal
     else :

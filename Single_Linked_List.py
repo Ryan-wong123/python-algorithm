@@ -81,7 +81,7 @@ class LinkedList:
             if currentNode.data == key and currentNode == self.head:
                 found = True
                 self.head = currentNode.nextNode
-            #if the current node that holds the data of the key is the body
+            #if the current node that holds the data of the key is the body or tail
             elif currentNode.data == key:
                 found = True
                 previousNode.nextNode = currentNode.nextNode

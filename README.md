@@ -1,4 +1,4 @@
-# Python Algorithms
+# Sorting
 
 ## Selection sort
 -Time complexity: O(n^2)
@@ -12,3 +12,11 @@
 ## Merge Sort
 -list of items keeps getting divided by half <br>
 -Time Complexity: O(n log n)
+
+# Searching
+
+## Linear Search
+- Time complexity: O(n) <br>
+
+## Binary Search
+- Time complexity: O(log n) <br>

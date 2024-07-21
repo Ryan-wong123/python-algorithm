@@ -108,5 +108,5 @@ class LinkedList:
             #if current node is the body 
             else:
                 nodes.append("[%s]" % current.data)
-            current = current.next_node
+            current  = current.nextNode
         return  '-> '.join(nodes)

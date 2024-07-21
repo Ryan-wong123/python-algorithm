@@ -91,7 +91,20 @@ class LinkedList:
                 currentNode = currentNode.nextNode
 
         return currentNode
-
+    
+    #calculate node at index
+    def NodeAtIndex(self,index):
+        if(index == 0):
+            return self.head
+        else:
+            current = self.head
+            position = 0
+            
+            while (position < index):
+                current = current.nextNode
+                position += 1
+            return current
+        
     #return a string representation of the linked list, O(n) time complexity
     def __repr__(self):
 
@@ -103,7 +116,7 @@ class LinkedList:
             if current is self.head:
                 nodes.append("[Head: %s]" % current.data)
             #if current node is tail
-            elif current.next is None:
+            elif current.nextNode is None:
                 nodes.append("[Tail: %s]" % current.data)
             #if current node is the body 
             else:

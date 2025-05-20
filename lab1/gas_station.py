@@ -1,7 +1,7 @@
 import heapq
 
 def min_stops(D, M, S):
-    S.append(D)  # Treat destination as last "station"
+    S.append(D)
     num_stops = 0
     current_fuel = M
     prev = 0
@@ -10,18 +10,22 @@ def min_stops(D, M, S):
     for station in S:
         distance = station - prev
 
-        # Refuel from best previous stations if we can't reach the next one
+        # Refuel while we can't reach the next station
         while current_fuel < distance:
             if not max_heap:
-                return -1  # No station to refuel from
+                return -1
+            # Refuel from the best previous station
             current_fuel += -heapq.heappop(max_heap)
             num_stops += 1
+            # Clear the heap (as in first version)
+            max_heap = []
 
         current_fuel -= distance
 
-        # After reaching this station, we can consider refueling here
+        # Push remaining fuel (M - current_fuel) at this station
         if station != D:
-            heapq.heappush(max_heap, -M)
+            remaining = M - current_fuel
+            heapq.heappush(max_heap, -remaining)
 
         prev = station
 

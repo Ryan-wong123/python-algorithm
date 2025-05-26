@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pathfinding Algorithm Comparison</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+  <div class="container mx-auto p-4">
+    <h1 class="text-3xl font-bold mb-6 text-center">Pathfinding Visualizer</h1>
+
+    <div class="mb-4 flex justify-center gap-4">
+      <button onclick="setMode('start')" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Start</button>
+      <button onclick="setMode('end')" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">End</button>
+      <button onclick="setMode('obstacle')" class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded">Obstacle</button>
+      <button onclick="submitGrid()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Run Algorithms</button>
+    </div>
+
+    <div class="overflow-x-auto mb-6">
+      <table id="grid" class="border border-gray-400 mx-auto"></table>
+    </div>
+
+    <div id="grids-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4"></div>
+  </div>
+
+  <script>
+    const rows = 10, cols = 10;
+    let grid = Array.from({ length: rows }, () => Array(cols).fill(0));
+    let mode = 'start';
+
+    function buildGrid() {
+      const table = document.getElementById("grid");
+      table.innerHTML = "";
+      for (let r = 0; r < rows; r++) {
+        const row = document.createElement("tr");
+        for (let c = 0; c < cols; c++) {
+          const cell = document.createElement("td");
+          cell.className = "w-10 h-10 border border-gray-300 bg-white cursor-pointer";
+          cell.dataset.row = r;
+          cell.dataset.col = c;
+          cell.onclick = () => setCell(r, c, cell);
+          row.appendChild(cell);
+        }
+        table.appendChild(row);
+      }
+    }
+
+    function setMode(m) {
+      mode = m;
+    }
+
+    function setCell(r, c, cell) {
+      if (mode === "start") {
+        clearClass("bg-green-300");
+        cell.classList.add("bg-green-300");
+        resetValue("S");
+        grid[r][c] = "S";
+      } else if (mode === "end") {
+        clearClass("bg-red-300");
+        cell.classList.add("bg-red-300");
+        resetValue("T");
+        grid[r][c] = "T";
+      } else {
+        cell.classList.toggle("bg-gray-500");
+        grid[r][c] = grid[r][c] === 1 ? 0 : 1;
+      }
+    }
+
+    function clearClass(className) {
+      document.querySelectorAll(`.${className}`).forEach(e => e.classList.remove(className));
+    }
+
+    function resetValue(type) {
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          if (grid[r][c] === type) grid[r][c] = 0;
+        }
+      }
+    }
+
+    function findCell(type) {
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          if (grid[r][c] === type) return [r, c];
+        }
+      }
+      return null;
+    }
+
+    function submitGrid() {
+      const start = findCell("S"), end = findCell("T");
+      if (!start || !end) {
+        alert("Set both start and end points!");
+        return;
+      }
+
+      fetch("/solve", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ grid, start, end })
+      })
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById("grids-container");
+        container.innerHTML = "";
+
+        data.forEach(algo => {
+          const gridCopy = JSON.parse(JSON.stringify(grid));
+          const table = document.createElement("table");
+          table.className = "border border-gray-400 mx-auto";
+
+          for (let r = 0; r < rows; r++) {
+            const row = document.createElement("tr");
+            for (let c = 0; c < cols; c++) {
+              const cell = document.createElement("td");
+              cell.className = "w-6 h-6 border text-center";
+              const val = gridCopy[r][c];
+              if (val === 1) cell.classList.add("bg-black");
+              else if (val === "S") {
+                cell.classList.add("bg-green-300");
+                cell.textContent = "S";
+              } else if (val === "T") {
+                cell.classList.add("bg-red-300");
+                cell.textContent = "T";
+              }
+              row.appendChild(cell);
+            }
+            table.appendChild(row);
+          }
+
+          algo.path.forEach(([r, c]) => {
+            const td = table.rows[r].cells[c];
+            if (gridCopy[r][c] !== "S" && gridCopy[r][c] !== "T") {
+              td.classList.add("bg-yellow-300");
+            }
+          });
+
+          const wrapper = document.createElement("div");
+          wrapper.innerHTML = `<h3 class="text-lg font-semibold mb-2 text-center">${algo.name} (${algo.time} ms)</h3>`;
+          wrapper.appendChild(table);
+          container.appendChild(wrapper);
+        });
+      });
+    }
+
+    buildGrid();
+  </script>
+</body>
+</html>

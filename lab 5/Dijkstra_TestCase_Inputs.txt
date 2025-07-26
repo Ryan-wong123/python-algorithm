@@ -1,0 +1,5 @@
+L M 6
+L N 7
+M O 4
+N O 3
+L O

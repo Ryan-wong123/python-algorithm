@@ -1,0 +1,10 @@
+2
+Human Chimpanzee 1.0
+Human Gorilla 2.0
+Human Orangutan 3.0
+Chimpanzee Gorilla 1.5
+Gorilla Orangutan 2.5
+Chimpanzee Orangutan 2.8
+Human Gibbon 4.5
+Gorilla Gibbon 4.0
+Orangutan Gibbon 3.5
